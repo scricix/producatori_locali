@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Producător - Piața Producătorilor Locali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <header class="section" style="padding: 1rem 0;">
+        <div class="container flex flex-row-mobile justify-between items-center">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i> Producători Locali
+            </a>
+            <div class="flex flex-row-mobile gap-sm items-center">
+                <span id="user-name" class="text-muted"></span>
+                <button class="btn btn-secondary" onclick="ProducerDashboard.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Deconectare
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 style="margin-bottom: var(--spacing-lg);">Dashboard Producător</h1>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-4" style="margin-bottom: var(--spacing-xl);">
+                <div class="card" style="padding: var(--spacing-lg); text-align: center;">
+                    <i class="fas fa-box" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3 id="total-products">0</h3>
+                    <p class="text-muted">Produse Active</p>
+                </div>
+                <div class="card" style="padding: var(--spacing-lg); text-align: center;">
+                    <i class="fas fa-shopping-cart"
+                        style="font-size: 2.5rem; color: var(--info); margin-bottom: 1rem;"></i>
+                    <h3 id="total-orders">0</h3>
+                    <p class="text-muted">Comenzi Noi</p>
+                </div>
+                <div class="card" style="padding: var(--spacing-lg); text-align: center;">
+                    <i class="fas fa-chart-line"
+                        style="font-size: 2.5rem; color: var(--success); margin-bottom: 1rem;"></i>
+                    <h3 id="total-revenue">0 Lei</h3>
+                    <p class="text-muted">Vânzări Luna Curentă</p>
+                </div>
+                <div class="card" style="padding: var(--spacing-lg); text-align: center;">
+                    <i class="fas fa-star" style="font-size: 2.5rem; color: var(--warning); margin-bottom: 1rem;"></i>
+                    <h3 id="avg-rating">5.0</h3>
+                    <p class="text-muted">Rating Mediu</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-sm"
+                style="margin-bottom: var(--spacing-lg); border-bottom: 2px solid var(--border-color);">
+                <button class="btn" onclick="ProducerDashboard.switchTab('products')" id="tab-products"
+                    style="border-radius: 0; border-bottom: 3px solid var(--primary);">
+                    Produsele Mele
+                </button>
+                <button class="btn" onclick="ProducerDashboard.switchTab('add-product')" id="tab-add-product"
+                    style="border-radius: 0;">
+                    Adaugă Produs
+                </button>
+                <button class="btn" onclick="ProducerDashboard.switchTab('orders')" id="tab-orders"
+                    style="border-radius: 0;">
+                    Comenzi
+                </button>
+                <button class="btn" onclick="ProducerDashboard.switchTab('profile')" id="tab-profile"
+                    style="border-radius: 0;">
+                    Profil
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content-products" class="tab-content">
+                <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-md);">
+                    <h2>Produsele Mele</h2>
+                    <button class="btn btn-primary" onclick="ProducerDashboard.switchTab('add-product')">
+                        <i class="fas fa-plus"></i> Adaugă Produs Nou
+                    </button>
+                </div>
+                <div class="grid grid-cols-3" id="my-products-grid">
+                    <p class="text-muted">Se încarcă...</p>
+                </div>
+            </div>
+
+            <div id="tab-content-add-product" class="tab-content" style="display: none;">
+                <h2 style="margin-bottom: var(--spacing-lg);">Adaugă Produs Nou</h2>
+                <form id="add-product-form" onsubmit="ProducerDashboard.addProduct(event)" style="max-width: 900px;">
+
+                    <h3 style="color: var(--primary-dark); margin-bottom: var(--spacing-md);">Informații Produs</h3>
+                    <div class="grid grid-cols-2">
+                        <div class="form-group">
+                            <label class="form-label">Nume Produs *</label>
+                            <input type="text" id="product-name" class="form-input" placeholder="ex: Roșii Cherry Bio"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Categorie *</label>
+                            <select id="product-category" class="form-select" required>
+                                <option value="">Selectează categoria</option>
+                                <option value="legume">🥕 Legume</option>
+                                <option value="fructe">🍎 Fructe</option>
+                                <option value="lactate">🧀 Lactate</option>
+                                <option value="miere">🍯 Miere</option>
+                                <option value="panificatie">🍞 Panificație</option>
+                                <option value="carne">🥩 Carne</option>
+                                <option value="altele">📦 Altele</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descriere Detaliată *</label>
+                        <textarea id="product-description" class="form-textarea" rows="4"
+                            placeholder="Descrie produsul tău: origine, mod de cultivare, beneficii..."
+                            required></textarea>
+                    </div>
+
+                    <h3 style="color: var(--primary-dark); margin: var(--spacing-lg) 0 var(--spacing-md);">Preț și Stoc
+                    </h3>
+                    <div class="grid grid-cols-3">
+                        <div class="form-group">
+                            <label class="form-label">Preț (Lei) *</label>
+                            <input type="number" id="product-price" class="form-input" step="0.01" min="0"
+                                placeholder="25.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unitate de Măsură *</label>
+                            <select id="product-unit" class="form-select" required>
+                                <option value="kg">Kilogram (kg)</option>
+                                <option value="bucată">Bucată</option>
+                                <option value="litru">Litru</option>
+                                <option value="pachet">Pachet</option>
+                                <option value="borcan">Borcan</option>
+                                <option value="legătură">Legătură</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stoc Disponibil</label>
+                            <input type="number" id="product-stock" class="form-input" min="0" value="10"
+                                placeholder="10">
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary-dark); margin: var(--spacing-lg) 0 var(--spacing-md);">Locație
+                        Producător</h3>
+                    <div class="grid grid-cols-2">
+                        <div class="form-group">
+                            <label class="form-label">Județ *</label>
+                            <input type="text" id="product-county" class="form-input" placeholder="ex: Timiș" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Localitate *</label>
+                            <input type="text" id="product-city" class="form-input" placeholder="ex: Timișoara"
+                                required>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary-dark); margin: var(--spacing-lg) 0 var(--spacing-md);">Imagini
+                        Produs</h3>
+                    <div class="form-group">
+                        <label class="form-label">Adaugă Imagini (max 5) *</label>
+                        <input type="file" id="product-images" class="form-input" accept="image/*" multiple required>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> Poți selecta până la 5 imagini. Prima imagine va fi
+                            imaginea principală.
+                        </p>
+                    </div>
+
+                    <div id="image-preview" class="grid grid-cols-5"
+                        style="margin-top: var(--spacing-md); gap: var(--spacing-sm);"></div>
+
+                    <div
+                        style="margin-top: var(--spacing-xl); padding-top: var(--spacing-md); border-top: 2px solid var(--border-color);">
+                        <button type="submit" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                            <i class="fas fa-plus-circle"></i> Adaugă Produs
+                        </button>
+                        <button type="button" class="btn btn-secondary" style="margin-left: 1rem;"
+                            onclick="document.getElementById('add-product-form').reset(); document.getElementById('image-preview').innerHTML = '';">
+                            <i class="fas fa-redo"></i> Resetează Formular
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="tab-content-orders" class="tab-content" style="display: none;">
+                <h2 style="margin-bottom: var(--spacing-lg);">Comenzile Mele</h2>
+                <div id="orders-list">
+                    <p class="text-muted">Se încarcă...</p>
+                </div>
+            </div>
+
+            <div id="tab-content-profile" class="tab-content" style="display: none;">
+                <h2 style="margin-bottom: var(--spacing-lg);">Profilul Meu</h2>
+                <p class="text-muted">Funcționalitate în dezvoltare...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Product Modal -->
+    <div id="edit-product-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
+        <div
+            style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--spacing-md);">
+            <div
+                style="background: var(--white); padding: 3rem; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-lg);">
+                    <h2>Editează Produs</h2>
+                    <button class="btn-icon" onclick="ProducerDashboard.closeEditModal()"
+                        style="background: var(--error); color: white;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form id="edit-product-form" onsubmit="ProducerDashboard.updateProduct(event)">
+                    <input type="hidden" id="edit-product-id">
+
+                    <h3 style="color: var(--primary-dark); margin-bottom: var(--spacing-md);">Informații Produs</h3>
+                    <div class="grid grid-cols-2">
+                        <div class="form-group">
+                            <label class="form-label">Nume Produs *</label>
+                            <input type="text" id="edit-product-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Categorie *</label>
+                            <select id="edit-product-category" class="form-select" required>
+                                <option value="legume">🥕 Legume</option>
+                                <option value="fructe">🍎 Fructe</option>
+                                <option value="lactate">🧀 Lactate</option>
+                                <option value="miere">🍯 Miere</option>
+                                <option value="panificatie">🍞 Panificație</option>
+                                <option value="carne">🥩 Carne</option>
+                                <option value="altele">📦 Altele</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descriere *</label>
+                        <textarea id="edit-product-description" class="form-textarea" rows="4" required></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-3">
+                        <div class="form-group">
+                            <label class="form-label">Preț (Lei) *</label>
+                            <input type="number" id="edit-product-price" class="form-input" step="0.01" min="0"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unitate *</label>
+                            <select id="edit-product-unit" class="form-select" required>
+                                <option value="kg">Kilogram (kg)</option>
+                                <option value="bucată">Bucată</option>
+                                <option value="litru">Litru</option>
+                                <option value="pachet">Pachet</option>
+                                <option value="borcan">Borcan</option>
+                                <option value="legătură">Legătură</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stoc</label>
+                            <input type="number" id="edit-product-stock" class="form-input" min="0">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2">
+                        <div class="form-group">
+                            <label class="form-label">Județ *</label>
+                            <input type="text" id="edit-product-county" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Localitate *</label>
+                            <input type="text" id="edit-product-city" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Adaugă Imagini Noi (opțional, max 5)</label>
+                        <input type="file" id="edit-product-images" class="form-input" accept="image/*" multiple>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> Imaginile noi vor fi adăugate la cele existente.
+                        </p>
+                    </div>
+
+                    <div id="edit-image-preview" class="grid grid-cols-5"
+                        style="margin-top: var(--spacing-md); gap: var(--spacing-sm);"></div>
+
+                    <div style="margin-top: var(--spacing-xl); display: flex; gap: var(--spacing-sm);">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            <i class="fas fa-save"></i> Salvează Modificările
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="ProducerDashboard.closeEditModal()">
+                            <i class="fas fa-times"></i> Anulează
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/app.js?v=2"></script>
+    <script src="js/producer-dashboard.js?v=2"></script>
+</body>
+
+</html>

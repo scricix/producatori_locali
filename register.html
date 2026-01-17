@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Înregistrare - Piața Producătorilor Locali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body style="background: linear-gradient(135deg, var(--primary-light), var(--secondary));">
+
+    <div
+        style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--spacing-md);">
+        <div
+            style="background: var(--white); padding: 3rem; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); max-width: 500px; width: 100%;">
+            <div class="text-center" style="margin-bottom: 2rem;">
+                <a href="index.html" class="logo"
+                    style="font-size: 2rem; justify-content: center; margin-bottom: 1rem;">
+                    <i class="fas fa-leaf"></i> Producători Locali
+                </a>
+                <h2 style="margin-bottom: 0.5rem;">Creează cont</h2>
+                <p class="text-muted">Înregistrează-te ca și cumpărător</p>
+            </div>
+
+            <form id="register-form" onsubmit="RegisterPage.handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label">Nume complet</label>
+                    <input type="text" id="name" class="form-input" placeholder="Ion Popescu" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="adresa@email.ro" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Telefon</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="0722 123 456" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Parolă</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required
+                        minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirmă parola</label>
+                    <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div style="margin-bottom: var(--spacing-md);">
+                    <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="terms" required style="margin-top: 0.25rem;">
+                        <span style="font-size: 0.9rem;">Accept <a href="#" style="color: var(--primary);">termenii și
+                                condițiile</a> și <a href="#" style="color: var(--primary);">politica de
+                                confidențialitate</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+                    <i class="fas fa-user-plus"></i> Creează cont
+                </button>
+
+                <div
+                    style="text-align: center; margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--border-color);">
+                    <p class="text-muted">Ai deja cont? <a href="login.html"
+                            style="color: var(--primary); font-weight: 600;">Autentifică-te</a></p>
+                    <p class="text-muted" style="margin-top: 0.5rem;">Ești producător? <a href="register-producer.html"
+                            style="color: var(--primary); font-weight: 600;">Înscrie-te aici</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/app.js?v=2"></script>
+    <script src="js/auth.js?v=2"></script>
+</body>
+
+</html>

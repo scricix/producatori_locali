@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coș de Cumpărături - Piața Producătorilor Locali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="section" style="padding: 1rem 0;">
+        <div class="container flex flex-row-mobile justify-between items-center">
+            <div class="flex flex-row-mobile items-center gap-sm">
+                <button class="mobile-nav-toggle" onclick="App.toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-leaf"></i> Producători Locali
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <ul class="flex gap-md items-center">
+                    <li><a href="index.html" class="nav-link">Acasă</a></li>
+                    <li><a href="products.html" class="nav-link">Produse</a></li>
+                    <li><a href="producers.html" class="nav-link">Producători</a></li>
+                    <li><a href="about.html" class="nav-link">Despre Noi</a></li>
+                </ul>
+            </nav>
+            <div class="flex flex-row-mobile gap-sm items-center">
+                <a href="cart.html" class="btn-icon"
+                    style="position: relative; background: var(--primary); color: white;">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span id="cart-count" class="badge badge-new"
+                        style="position: absolute; top: -5px; right: -5px;">0</span>
+                </a>
+                <div class="flex flex-row-mobile gap-sm items-center auth-buttons">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Sidebar -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="App.toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i> Producători
+            </a>
+            <button onclick="App.toggleMobileMenu()" style="background: none; border: none; font-size: 1.5rem;">
+                &times;
+            </button>
+        </div>
+        <ul class="flex-col gap-md">
+            <li><a href="index.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-home"></i> Acasă</a>
+            </li>
+            <li><a href="products.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-box"></i>
+                    Produse</a></li>
+            <li><a href="producers.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-users"></i>
+                    Producători</a></li>
+            <li><a href="about.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-info-circle"></i>
+                    Despre Noi</a></li>
+        </ul>
+        <div class="mobile-auth-buttons" id="mobile-auth-buttons"
+            style="margin-top: auto; display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Will be injected by JS -->
+        </div>
+    </div>
+
+    <section style="background: linear-gradient(135deg, var(--primary-light), var(--secondary)); padding: 3rem 0;">
+        <div class="container text-center">
+            <h1 style="color: var(--primary-dark);"><i class="fas fa-shopping-basket"></i> Coșul Meu</h1>
+            <p class="text-muted">Verifică produsele selectate și finalizează comanda</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="flex gap-md" style="align-items: flex-start;">
+                <!-- Cart Items -->
+                <div style="flex: 2; width: 100%;">
+                    <div id="cart-items" class="flex-col gap-md">
+                        <!-- Cart items will be rendered here -->
+                    </div>
+                    <div id="empty-cart" style="display: none; text-align: center; padding: 3rem;">
+                        <i class="fas fa-shopping-basket"
+                            style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                        <h3>Coșul tău este gol</h3>
+                        <p class="text-muted">Adaugă produse pentru a continua cumpărăturile</p>
+                        <a href="products.html" class="btn btn-primary" style="margin-top: 1rem;">Vezi Produsele</a>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <aside id="order-summary-aside"
+                    style="flex: 1; min-width: 300px; background: var(--white); padding: var(--spacing-lg); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); position: sticky; top: 100px;">
+                    <h3 style="margin-bottom: var(--spacing-md);">Sumar Comandă</h3>
+
+                    <div class="flex justify-between" style="margin-bottom: var(--spacing-sm);">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">0.00 Lei</span>
+                    </div>
+                    <div class="flex justify-between" style="margin-bottom: var(--spacing-sm);">
+                        <span>Livrare:</span>
+                        <span id="delivery">Calculat la checkout</span>
+                    </div>
+                    <hr style="margin: var(--spacing-md) 0; border: none; border-top: 1px solid var(--border-color);">
+                    <div class="flex justify-between"
+                        style="font-size: 1.25rem; font-weight: 700; margin-bottom: var(--spacing-md);">
+                        <span>Total:</span>
+                        <span id="total" style="color: var(--primary-dark);">0.00 Lei</span>
+                    </div>
+
+                    <a href="checkout.html" id="checkout-btn" class="btn btn-primary"
+                        style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+                        <i class="fas fa-credit-card"></i> Finalizează Comanda
+                    </a>
+                    <a href="products.html" class="btn btn-secondary"
+                        style="width: 100%; margin-top: var(--spacing-sm);">
+                        <i class="fas fa-arrow-left"></i> Continuă Cumpărăturile
+                    </a>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2025 Platforma Producătorilor Locali. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/app.js?v=2"></script>
+    <script src="js/cart.js?v=2"></script>
+</body>
+
+</html>

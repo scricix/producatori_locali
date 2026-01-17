@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produse - Piața Producătorilor Locali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="section" style="padding: 1rem 0;">
+        <div class="container flex flex-row-mobile justify-between items-center">
+            <div class="flex flex-row-mobile items-center gap-sm">
+                <button class="mobile-nav-toggle" onclick="App.toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-leaf"></i> Producători Locali
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <ul class="flex gap-md items-center">
+                    <li><a href="index.html" class="nav-link">Acasă</a></li>
+                    <li><a href="products.html" class="nav-link" style="color: var(--primary);">Produse</a></li>
+                    <li><a href="producers.html" class="nav-link">Producători</a></li>
+                    <li><a href="about.html" class="nav-link">Despre Noi</a></li>
+                </ul>
+            </nav>
+            <div class="flex flex-row-mobile gap-sm items-center">
+                <a href="cart.html" class="btn-icon" style="position: relative;">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span id="cart-count" class="badge badge-new"
+                        style="position: absolute; top: -5px; right: -5px; padding: 0.2rem 0.4rem; font-size: 0.6rem;">0</span>
+                </a>
+                <div class="flex flex-row-mobile gap-sm items-center auth-buttons" id="auth-buttons">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Sidebar -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="App.toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i> Producători
+            </a>
+            <button onclick="App.toggleMobileMenu()" style="background: none; border: none; font-size: 1.5rem;">
+                &times;
+            </button>
+        </div>
+        <ul class="flex-col gap-md">
+            <li><a href="index.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-home"></i> Acasă</a>
+            </li>
+            <li><a href="products.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-box"></i>
+                    Produse</a></li>
+            <li><a href="producers.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-users"></i>
+                    Producători</a></li>
+            <li><a href="about.html" class="nav-link" style="font-size: 1.2rem;"><i class="fas fa-info-circle"></i>
+                    Despre Noi</a></li>
+        </ul>
+        <div class="mobile-auth-buttons" id="mobile-auth-buttons"
+            style="margin-top: auto; display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Will be injected by JS -->
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section style="background: linear-gradient(135deg, var(--primary-light), var(--secondary)); padding: 3rem 0;">
+        <div class="container text-center">
+            <h1 style="color: var(--primary-dark);">Toate Produsele</h1>
+            <p class="text-muted">Descoperă produse proaspete de la producătorii locali</p>
+        </div>
+    </section>
+
+    <!-- Filters & Products -->
+    <section class="section">
+        <div class="container">
+            <div class="flex gap-md" style="align-items: flex-start;">
+                <!-- Sidebar Filters -->
+                <aside
+                    style="width: 280px; background: var(--white); padding: var(--spacing-md); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md);">
+                    <h3 style="margin-bottom: var(--spacing-md);">Filtrează</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Caută</label>
+                        <input type="text" id="search-input" class="form-input" placeholder="Nume produs...">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categorie</label>
+                        <select id="category-filter" class="form-select">
+                            <option value="">Toate categoriile</option>
+                            <option value="legume">Legume</option>
+                            <option value="fructe">Fructe</option>
+                            <option value="lactate">Lactate</option>
+                            <option value="miere">Miere</option>
+                            <option value="panificatie">Panificație</option>
+                            <option value="carne">Carne</option>
+                            <option value="altele">Altele</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Preț maxim</label>
+                        <input type="range" id="price-filter" min="0" max="500" value="500" class="form-input"
+                            style="padding: 0;">
+                        <div class="flex justify-between" style="font-size: 0.9rem; color: var(--text-muted);">
+                            <span>0 Lei</span>
+                            <span id="price-value">500 Lei</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%;" onclick="ProductsPage.applyFilters()">
+                        <i class="fas fa-filter"></i> Aplică Filtre
+                    </button>
+                </aside>
+
+                <!-- Products Grid -->
+                <div style="flex: 1;">
+                    <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-md);">
+                        <p class="text-muted" id="results-count">Se încarcă...</p>
+                        <select id="sort-filter" class="form-select" style="width: auto;"
+                            onchange="ProductsPage.applyFilters()">
+                            <option value="newest">Cele mai noi</option>
+                            <option value="price-asc">Preț crescător</option>
+                            <option value="price-desc">Preț descrescător</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-3" id="products-grid">
+                        <!-- Loading state -->
+                        <div class="card">
+                            <div class="card-img" style="background: #eee;"></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background: #eee;"></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background: #eee;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div id="pagination" class="flex justify-center gap-sm" style="margin-top: var(--spacing-lg);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="grid grid-cols-4">
+                <div>
+                    <a href="#" class="logo" style="color: white; margin-bottom: 1rem; display: inline-block;">
+                        <i class="fas fa-leaf"></i> Producători Locali
+                    </a>
+                    <p style="color: #bdc3c7;">Conectăm producătorii autentici cu consumatorii responsabili.</p>
+                </div>
+                <div>
+                    <h4>Link-uri Utile</h4>
+                    <ul>
+                        <li><a href="#">Cum funcționează</a></li>
+                        <li><a href="#">Termeni și Condiții</a></li>
+                        <li><a href="#">Politica de Confidențialitate</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Pentru Producători</h4>
+                    <ul>
+                        <li><a href="register-producer.html">Înscrie-te ca Producător</a></li>
+                        <li><a href="producer-dashboard.html">Panoul de Control</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contact@producatorilocali.ro</p>
+                    <p><i class="fas fa-phone"></i> 0722 123 456</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Product Details Modal -->
+    <div id="product-modal" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto;">
+        <div class="modal-content"
+            style="background: white; max-width: 900px; margin: 2rem auto; border-radius: var(--border-radius-lg); position: relative; display: flex; flex-direction: column; overflow: hidden;">
+            <button onclick="App.closeProductModal()"
+                style="position: absolute; top: 1rem; right: 1rem; background: var(--error); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10;">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="flex" style="flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px; padding: 2rem; background: #f9f9f9;">
+                    <div id="modal-main-image-container"
+                        style="margin-bottom: 1rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); cursor: pointer;">
+                        <img id="modal-main-image" src="" style="width: 100%; height: 400px; object-fit: cover;">
+                    </div>
+                    <div id="modal-thumbnails" class="flex gap-sm" style="overflow-x: auto; padding-bottom: 0.5rem;">
+                        <!-- Thumbnails injected here -->
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 300px; padding: 3rem;">
+                    <span id="modal-category" class="badge" style="margin-bottom: 1rem;"></span>
+                    <h2 id="modal-title" style="margin-bottom: 0.5rem; font-size: 2rem;"></h2>
+                    <p id="modal-producer" class="text-muted" style="margin-bottom: 1.5rem;"></p>
+                    <div id="modal-price"
+                        style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;"></div>
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="margin-bottom: 0.5rem;">Descriere:</h4>
+                        <p id="modal-description" class="text-muted"></p>
+                    </div>
+                    <div class="flex items-center gap-md" style="margin-bottom: 2rem;">
+                        <div
+                            style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;">
+                            <button onclick="App.updateModalQty(-1)"
+                                style="padding: 0.5rem 1rem; border: none; background: #eee;">-</button>
+                            <input id="modal-qty" type="number" value="1" readonly
+                                style="width: 50px; text-align: center; border: none; outline: none;">
+                            <button onclick="App.updateModalQty(1)"
+                                style="padding: 0.5rem 1rem; border: none; background: #eee;">+</button>
+                        </div>
+                        <button id="modal-add-btn" class="btn btn-primary" style="flex: 1;">
+                            <i class="fas fa-cart-plus"></i> Adaugă în Coș
+                        </button>
+                    </div>
+                    <div style="padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                        <p style="font-size: 0.9rem;"><i class="fas fa-map-marker-alt"
+                                style="color: var(--primary);"></i> Locație: <span id="modal-location"></span></p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;"><i class="fas fa-truck"
+                                style="color: var(--info);"></i> Livrare disponibilă în județ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Gallery -->
+    <div id="lightbox" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center;">
+        <button onclick="App.closeLightbox()"
+            style="position: absolute; top: 2rem; right: 2rem; color: white; background: none; border: none; font-size: 2.5rem; cursor: pointer;">
+            <i class="fas fa-times"></i>
+        </button>
+        <button onclick="App.prevLightboxImage()"
+            style="position: absolute; left: 2rem; color: white; background: none; border: none; font-size: 3rem; cursor: pointer;">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <img id="lightbox-image" src=""
+            style="max-width: 90%; max-height: 80vh; object-fit: contain; border-radius: 8px;">
+        <button onclick="App.nextLightboxImage()"
+            style="position: absolute; right: 2rem; color: white; background: none; border: none; font-size: 3rem; cursor: pointer;">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div id="lightbox-counter" style="position: absolute; bottom: 2rem; color: white; font-size: 1.2rem;"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/app.js?v=2"></script>
+    <script src="js/products.js?v=2"></script>
+</body>
+
+</html>
