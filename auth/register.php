@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 require_once '../config/database.php';
 
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 $data = json_decode(file_get_contents('php://input'), true);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

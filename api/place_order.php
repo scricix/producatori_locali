@@ -3,6 +3,7 @@ header('Content-Type: application/json');
 require_once '../config/database.php';
 
 // Get JSON input
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
